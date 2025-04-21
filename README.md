@@ -47,40 +47,14 @@
 
 執行主程式：
 ```bash
-python download_m3u8.py <頁面網址或.m3u8 連結> [選項]
+python download_m3u8.py 
 ```
-
-### 常用選項
-
-- `-o, --output <檔名>`：輸出檔案名稱（預設 `output.ts`）
-- `--concurrency <數字>`：同時下載片段的執行緒數（預設 8）
-- `--live-duration <秒數>`：錄製直播時長（秒）
-- `--retries <數字>`：片段下載重試次數（預設 3）
-- `--no-convert`：下載完成後不做 TS→MP4 轉檔
-- `--verbose`：顯示除錯級別日誌
-
 ### 使用範例
-
-1. 下載固定播放清單並自動轉 MP4：
    ```bash
-   python download_m3u8.py https://example.com/stream.m3u8 -o myvideo.ts
+   (D:\code\video_download\env) PS C:\Users\User> & D:/code/video_download/env/python.exe d:/code/video_download/download_m3u8.py
+   請輸入輸出路徑（含檔名），直接 Enter 使用預設 'output.ts'(例如:D:\video.ts): D:/1515.ts
+   Enter page URL or .m3u8 link: https://media.ly.gov.tw/Home/Detail/342413
    ```
-
-2. 錄製直播 60 秒：
-   ```bash
-   python download_m3u8.py https://example.com/live -o live.ts --live-duration 60
-   ```
-
-3. 只下載 TS，不轉 MP4：
-   ```bash
-   python download_m3u8.py https://example.com/stream.m3u8 -o raw.ts --no-convert
-   ```
-
-4. 開啟詳細日誌並使用 16 執行緒：
-   ```bash
-   python download_m3u8.py ... --verbose --concurrency 16
-   ```
-
 ## 運作原理
 
 1. **性能日誌擷取**：Selenium 以 headless 模式啟動 Chrome，並讀取瀏覽器的 Network logs 抓取 `.m3u8` URL
