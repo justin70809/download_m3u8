@@ -62,17 +62,3 @@ python download_m3u8.py
 3. **片段下載**：收集所有 `.ts` 分段網址，去重後並行下載，失敗時重試
 4. **檔案合併**：將下載的所有片段按順序寫入單一 `.ts` 檔
 5. **封裝轉換**（可選）：用 `ffprobe` 取得影片總時長，再呼叫 `ffmpeg` 做容器重包裝，並以進度條顯示轉檔進度
-
-## 貢獻指南
-
-歡迎提出 issue 或 Pull Request：
-
-1. Fork 專案
-2. 建立分支：`git checkout -b feature/your-feature`
-3. 提交修改：`git commit -m "Add your feature"`
-4. 推送分支：`git push origin feature/your-feature`
-5. 在 GitHub 上發起 PR
-
-## 授權許可
-
-本專案採用 MIT 授權，詳見 [LICENSE](LICENSE)。
