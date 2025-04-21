@@ -1,5 +1,4 @@
 ﻿# download_m3u8
-# download_m3u8
 
 一款功能完善的 Python 腳本，用於下載 HLS（`.m3u8`）串流影片，合併片段，並可選擇將生成的 Transport Stream（`.ts`）轉封裝為 MP4，且在轉檔過程中顯示實時進度。
 
