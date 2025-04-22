@@ -201,14 +201,14 @@ def main():
 
             # YouTube handling
             if any(d in url for d in ytdl_domains):
-                subprocess.run(['yt-dlp','--list-formats','--no-playlist',url], check=True)
+                subprocess.run(['yt-dlp','--list-formats', url], check=True)
                 fmt_code = input("請輸入 format_id（如48、bestvideo+bestaudio）: ").strip()
                 info = YoutubeDL({'quiet':True}).extract_info(url, download=False)
                 fmt = next((f for f in info['formats'] if str(f['format_id']) == fmt_code), None)
                 if fmt and fmt.get('acodec') == 'none':
                     if input("Video-only格式，是否下載並合併最佳音訊？(y/n): ").strip().lower() == 'y':
                         fmt_code += "+bestaudio"
-                ydl_opts = {'format': fmt_code, 'outtmpl': args.output, 'retries': args.retries, 'noplaylist': True}
+                ydl_opts = {'format': fmt_code, 'outtmpl': args.output, 'retries': args.retries, 'noplaylist': False}
                 YoutubeDL(ydl_opts).download([url])
 
                 if input("下載完成，繼續下一個？(y/n): ").strip().lower() != 'y':
