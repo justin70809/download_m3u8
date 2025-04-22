@@ -1,4 +1,17 @@
-﻿# download_m3u8
+﻿## Third‑party Components
+
+- **FFmpeg** (version 7.0.2‑essentials_build‑…)
+  - Built with `--enable-gpl --enable-version3`
+  - Licensed under **GPLv3**
+  - Source & build scripts: https://ffmpeg.org/download.html
+
+## License
+
+This project (including all code in this repo) is licensed under
+**GNU General Public License v3.0**. See [LICENSE](LICENSE) for details.
+
+
+# download_m3u8
 
 一款功能完善的 Python 腳本，用於下載 HLS（`.m3u8`）串流影片，合併片段，並可選擇將生成的 Transport Stream（`.ts`）轉封裝為 MP4，且在轉檔過程中顯示實時進度。
 
