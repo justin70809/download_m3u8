@@ -1,3 +1,4 @@
 cloudscraper
 selenium
 tqdm
+yt-dlp
