@@ -1,12 +1,6 @@
 ﻿## 第三方元件許可
 
 本專案使用了若干第三方二進位和函式庫，詳見 [THIRD-PARTY.md](THIRD-PARTY.md)。
-## Third‑party Components
-
-- **FFmpeg** (version 7.0.2‑essentials_build‑…)
-  - Built with `--enable-gpl --enable-version3`
-  - Licensed under **GPLv3**
-  - Source & build scripts: https://ffmpeg.org/download.html
 
 ## License
 
