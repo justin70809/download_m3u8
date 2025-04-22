@@ -7,11 +7,11 @@
 - **FFprobe v7.0.2‑essentials_build**（GPL v3）
  資料來源及法律說明：https://ffmpeg.org/legal.html
 
-- **yt-dlp.exe**（Unlicense / Public Domain）
- LICENSE：https://github.com/yt-dlp/yt-dlp/blob/master/LICENSE
+- **ChromeDriver**（BSD 3‑Clause License）
+ LICENSE 文字：https://opensource.org/licenses/BSD-3-Clause
 
-- **ChromeDriver**（BSD 3‑Clause）
- LICENSE：https://opensource.org/licenses/BSD-3-Clause
+- **yt-dlp.exe**（Unlicense / Public Domain）
+ LICENSE 文字：https://github.com/yt-dlp/yt-dlp/blob/master/LICENSE
 
 ## 二、Python 運行時依賴
 以下函式庫透過 `pip install -r requirements.txt` 安裝，不直接打包在倉庫中，但為方便用戶了解，也一併列出：
