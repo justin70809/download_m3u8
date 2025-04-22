@@ -1,3 +1,6 @@
+dist/*.zip filter=lfs diff=lfs merge=lfs -text
+dist/download_video/_internal/ffmpeg.exe filter=lfs diff=lfs merge=lfs -text
+dist/download_video/_internal/ffprobe.exe filter=lfs diff=lfs merge=lfs -text
 dist/download_video.zip filter=lfs diff=lfs merge=lfs -text
 dist/download_video/ffmpeg.exe filter=lfs diff=lfs merge=lfs -text
 dist/download_video/ffprobe.exe filter=lfs diff=lfs merge=lfs -text
