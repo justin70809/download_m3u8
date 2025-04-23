@@ -68,11 +68,11 @@ $ python download_m3u8.py <URL 或 .m3u8 或 YouTube>
 ```
 
 - 打包後的可執行檔將會放在 [`exe`](exe) 資料夾。
-- 內嵌 ChromeDriver、FFmpeg、FFprobe，不需另行安裝。
-- 若你在原始碼目錄執行程式，請確保以下外部執行檔已放入 `bin/` 或加入系統 PATH：
+- 若執行程式，請確保以下外部執行檔已放入同目錄：
   - `chromedriver.exe`
   - `ffmpeg.exe`
   - `ffprobe.exe`
+  - `yt-dlp.exe`
 
 ---
 
