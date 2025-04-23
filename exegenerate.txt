@@ -7,3 +7,13 @@ pyinstaller --onedir --console --name download_video `
   --collect-submodules selenium `
   --collect-submodules yt_dlp `
   download_m3u8.py
+
+
+pyinstaller `
+  --onefile `
+  --console `
+  --add-binary "chromedriver.exe;." `
+  --add-binary "ffmpeg.exe;." `
+  --add-binary "ffprobe.exe;." `
+  --add-binary "yt-dlp.exe;." `
+  download_m3u8.py

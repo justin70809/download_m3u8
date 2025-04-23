@@ -3,3 +3,7 @@ __pycache__/
 *.pyc
 *.log
 *.ts
+chromedriver.exe
+ffmpeg.exe
+ffprobe.exe
+yt-dlp.exe
