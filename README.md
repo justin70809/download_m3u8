@@ -1,12 +1,5 @@
 ﻿# download_m3u8
-
-<<<<<<< HEAD
 > **HLS／YouTube 影音下載 + 轉檔** — 以 Python 實作，支援自動擷取 `.m3u8`、並行下載、TS→MP4 重封裝，以及互動式格式選擇。
-
----
-=======
-本專案使用了若干第三方二進位和函式庫，詳見 [THIRD-PARTY.md](THIRD-PARTY.md)。
->>>>>>> d68310b127e5ee6021a03e709edac486ede0e8eb
 
 ## 特色
 
@@ -116,7 +109,7 @@ tk
 ## 授權
 
 本專案採用 **GNU General Public License v3.0**。詳見 [`LICENSE`](LICENSE)。
-
+本專案使用了若干第三方二進位和函式庫，詳見 [THIRD-PARTY.md](THIRD-PARTY.md)。
 ---
 
 ## 致謝
