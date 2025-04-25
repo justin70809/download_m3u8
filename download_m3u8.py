@@ -161,18 +161,45 @@ def get_media_duration(path):
 
 def convert_ts_to_mp4(ts_path, mp4_path):
     duration = get_media_duration(ts_path)
-    cmd = ['ffmpeg','-i',ts_path,'-c','copy','-movflags','+faststart',mp4_path,'-progress','pipe:1']
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+    cmd = [
+        'ffmpeg',
+        '-hide_banner',
+        '-loglevel', 'warning',          # 少一點雜訊
+        '-i', ts_path,
+        '-c', 'copy',
+        '-movflags', '+faststart',
+        mp4_path,
+        '-progress', 'pipe:1',
+        '-nostats'                       # 關掉預設速率列，避免干擾
+    ]
+
+    proc = subprocess.Popen(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,        # <-- 與 stdout 合併，避免堵塞
+        text=True,
+        bufsize=1
+    )
+
     if duration:
         pbar = tqdm(total=int(duration), unit='sec', desc='Converting')
-        for line in proc.stdout:
-            if 'out_time_ms' in line:
-                pbar.update(int(int(line.split('=')[1])/1e6) - pbar.n)
-        pbar.close()
+    else:
+        pbar = tqdm(unit='sec', desc='Converting')
+
+    for line in proc.stdout:
+        if line.startswith('out_time_ms='):
+            cur = int(line.split('=')[1]) / 1_000_000
+            pbar.update(max(0, cur - pbar.n))
+
     proc.wait()
+    pbar.close()
+
+    if proc.returncode != 0:
+        raise RuntimeError("ffmpeg 轉檔失敗")
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="Download HLS (.m3u8) or YouTube videos/playlists via yt-dlp")
     parser.add_argument('url', nargs='?', help='Page URL, .m3u8 link, YouTube URL or playlist')
     parser.add_argument('--concurrency', type=int, default=8, help='Concurrent downloads')
@@ -187,7 +214,7 @@ def main():
     while True:
         try:
             orig_url = args.url or input('Enter page URL, .m3u8 link, YouTube URL or playlist: ').strip()
-            args.url = None
+            args.url = None  # 只使用一次
             url = orig_url
 
             # YouTube/Playlist branch
@@ -252,46 +279,53 @@ def main():
             # HLS (.m3u8) branch
             m3u8 = url if url.lower().endswith('.m3u8') else get_m3u8_via_perflog(url)
             base_name = os.path.basename(m3u8.split('?')[0])
+
+            # 產生預設檔名（先抓 <title>，失敗則用 m3u8 basename）
             if not orig_url.lower().endswith('.m3u8'):
                 try:
                     resp = session.get(orig_url); resp.raise_for_status()
                     m = re.search(r'<title>(.*?)</title>', resp.text, re.I | re.S)
                     page_title = m.group(1).strip() if m else os.path.splitext(base_name)[0]
-                except:
+                except Exception:
                     page_title = os.path.splitext(base_name)[0]
-                default_fname = f"{page_title}.ts"
             else:
-                default_fname = os.path.splitext(base_name)[0] + '.ts'
+                page_title = os.path.splitext(base_name)[0]
 
-            # 下載到暫存 TS
-            temp_ts = os.path.join(os.getcwd(), default_fname)
-            download_and_merge(m3u8, temp_ts, args.concurrency, args.live_duration, args.retries)
+            default_fname_mp4 = f"{page_title}.mp4"
 
-            # 直接轉 MP4，刪除 TS
-            temp_mp4 = os.path.splitext(temp_ts)[0] + '.mp4'
-            try:
-                convert_ts_to_mp4(temp_ts, temp_mp4)
-                logging.info(f"Converted to MP4: {temp_mp4}")
-                os.remove(temp_ts)
-                logging.info(f"Removed temporary TS: {temp_ts}")
-            except Exception as e:
-                logging.error(f"Convert failed: {e}")
-                sys.exit(1)
-
-            # 最終詢問使用者 MP4 儲存路徑
+            # ---------- 先決定 MP4 存檔路徑 ----------
             out_path = asksaveasfilename(
                 title="選擇儲存 MP4 檔案",
-                initialfile=os.path.basename(temp_mp4),
+                initialfile=default_fname_mp4,
                 defaultextension='.mp4',
-                filetypes=[("MP4 Files","*.mp4"),("All Files","*.*")]
+                filetypes=[("MP4 Files", "*.mp4"), ("All Files", "*.*")]
             )
             if not out_path:
                 print("未選擇保存路徑，退出。")
-                os.remove(temp_mp4)
                 sys.exit(0)
-            os.replace(temp_mp4, out_path)
-            logging.info(f"Saved final MP4 to: {out_path}")
 
+            os.makedirs(os.path.dirname(out_path) or '.', exist_ok=True)
+            temp_ts = out_path + ".download.ts"
+
+            # ---------- 下載 + 合併段檔 ----------
+            download_and_merge(m3u8, temp_ts,
+                               concurrency=args.concurrency,
+                               live_duration=args.live_duration,
+                               retries=args.retries)
+
+            # ---------- 轉檔 ----------
+            try:
+                convert_ts_to_mp4(temp_ts, out_path)
+                logging.info(f"Converted to MP4 → {out_path}")
+            except Exception as e:
+                logging.error(f"Convert failed: {e}")
+                os.remove(temp_ts)
+                sys.exit(1)
+            finally:
+                if os.path.exists(temp_ts):
+                    os.remove(temp_ts)
+
+            # ---------- 完成 ----------
             if input("下載完成，繼續下一個？(y/n): ").strip().lower() != 'y':
                 break
 
@@ -300,7 +334,6 @@ def main():
             if input("發生錯誤，繼續下一個？(y/n): ").strip().lower() != 'y':
                 sys.exit(1)
             continue
-
 
 if __name__ == '__main__':
     main()
