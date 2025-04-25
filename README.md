@@ -1,12 +1,5 @@
 ﻿# download_m3u8
-
-<<<<<<< HEAD
 > **HLS／YouTube 影音下載 + 轉檔** — 以 Python 實作，支援自動擷取 `.m3u8`、並行下載、TS→MP4 重封裝，以及互動式格式選擇。
-
----
-=======
-本專案使用了若干第三方二進位和函式庫，詳見 [THIRD-PARTY.md](THIRD-PARTY.md)。
->>>>>>> d68310b127e5ee6021a03e709edac486ede0e8eb
 
 ## 特色
 
@@ -74,12 +67,12 @@ $ python download_m3u8.py <URL 或 .m3u8 或 YouTube>
             download_m3u8.py
 ```
 
-- 打包後的可執行檔將會放在 `exe/` 資料夾。
-- 內嵌 ChromeDriver、FFmpeg、FFprobe，不需另行安裝。
-- 若你在原始碼目錄執行程式，請確保以下外部執行檔已放入 `bin/` 或加入系統 PATH：
+- 打包後的可執行檔將會放在 [`exe`](exe) 資料夾。
+- 若執行程式，請確保以下外部執行檔已放入同目錄：
   - `chromedriver.exe`
   - `ffmpeg.exe`
   - `ffprobe.exe`
+  - `yt-dlp.exe`
 
 ---
 
@@ -116,7 +109,7 @@ tk
 ## 授權
 
 本專案採用 **GNU General Public License v3.0**。詳見 [`LICENSE`](LICENSE)。
-
+本專案使用了若干第三方二進位和函式庫，詳見 [THIRD-PARTY.md](THIRD-PARTY.md)。
 ---
 
 ## 致謝
